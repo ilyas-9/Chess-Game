@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/Board.cpp">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Board.cpp" />
+              <option name="updatedContent" value="// ...existing code...&#10;&#10;bool Board::isMoveLegal(Position from, Position to) {&#10;    // Check if the move is in the piece's regular move pattern&#10;    Piece* piece = getPiece(from);&#10;    if (!piece) return false;&#10;    &#10;    // Check if this move would leave the king in check&#10;    if (leavesKingInCheck(from, to))&#10;        return false;&#10;        &#10;    return true;&#10;}&#10;&#10;bool Board::leavesKingInCheck(Position from, Position to) {&#10;    // Save current state&#10;    Piece* movingPiece = getPiece(from);&#10;    Piece* targetPiece = getPiece(to);&#10;    &#10;    // Simulate the move&#10;    setPiece(to, movingPiece);&#10;    setPiece(from, nullptr);&#10;    &#10;    // Check if king is in check after this move&#10;    bool kingInCheck = isKingInCheck(movingPiece-&gt;isWhite());&#10;    &#10;    // Restore the board&#10;    setPiece(from, movingPiece);&#10;    setPiece(to, targetPiece);&#10;    &#10;    return kingInCheck;&#10;}&#10;&#10;bool Board::isKingInCheck(bool isWhite) {&#10;    // Find the king's position&#10;    Position kingPos = findKing(isWhite);&#10;    &#10;    // Check if any opponent piece can attack the king&#10;    for (int i = 0; i &lt; 8; i++) {&#10;        for (int j = 0; j &lt; 8; j++) {&#10;            Position pos(i, j);&#10;            Piece* piece = getPiece(pos);&#10;            if (piece &amp;&amp; piece-&gt;isWhite() != isWhite) {&#10;                // Use the piece's basic move generation without legal move check&#10;                // to avoid infinite recursion&#10;                std::vector&lt;Position&gt; moves = piece-&gt;getMoves(this, pos, true);&#10;                for (Position move : moves) {&#10;                    if (move == kingPos)&#10;                        return true;&#10;                }&#10;            }&#10;        }&#10;    }&#10;    return false;&#10;}&#10;&#10;Position Board::findKing(bool isWhite) {&#10;    for (int i = 0; i &lt; 8; i++) {&#10;        for (int j = 0; j &lt; 8; j++) {&#10;            Position pos(i, j);&#10;            Piece* piece = getPiece(pos);&#10;            // Check if this piece is a king of the right color&#10;            if (piece &amp;&amp; piece-&gt;getType() == PieceType::KING &amp;&amp; piece-&gt;isWhite() == isWhite) {&#10;                return pos;&#10;            }&#10;        }&#10;    }&#10;    // Should never happen in a valid chess game&#10;    return Position(-1, -1);&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Board.h">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Board.h" />
+              <option name="updatedContent" value="// ...existing code...&#10;&#10;class Board {&#10;    // ...existing code...&#10;public:&#10;    // Add these new methods&#10;    bool isMoveLegal(Position from, Position to);&#10;    bool leavesKingInCheck(Position from, Position to);&#10;    bool isKingInCheck(bool isWhite);&#10;    Position findKing(bool isWhite);&#10;    // ...existing code...&#10;};&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Piece.h">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Piece.h" />
+              <option name="updatedContent" value="// ...existing code...&#10;&#10;class Piece {&#10;    // ...existing code...&#10;public:&#10;    // Modify or add these methods&#10;    virtual std::vector&lt;Position&gt; getMoves(Board* board, Position pos, bool skipLegalityCheck = false) = 0;&#10;    std::vector&lt;Position&gt; getLegalMoves(Board* board, Position pos);&#10;    // ...existing code...&#10;};&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
