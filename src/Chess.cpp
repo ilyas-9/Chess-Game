@@ -19,7 +19,6 @@ namespace Chess {
 		initBoard();
 		setPosition();
 		UpCovSquare();
-
 	}
 	Chess::~Chess() {
 								// Select a piece if none is selected
@@ -105,16 +104,6 @@ namespace Chess {
 				}
 			}
 	}
-
-
-
-
-	void Chess::update() {
-		// Update game logic here
-		// Add any other game updates here
-	}
-
-
 
 
 	void Chess::Render() {
@@ -363,7 +352,7 @@ namespace Chess {
 					}
 				}
 		}if (piece->type == 6 && piece->CovSquare[y][x] == 4) {
-				//en passant logic
+				//en passant logice
 				if (piece->color == 1) {
 					delete board[y+1][x];
 					board[y+1][x] = nullptr;
@@ -393,11 +382,10 @@ namespace Chess {
 		isCheck[0] = false; // Reset check status for white
 		isCheck[1] = false; // Reset check status for black
 		isCheckMate = false; // Reset checkmate status
-		board[y][x] = new Piece(*piece);
-		delete piece;
+		board[y][x] = piece;
 		board[board[y][x]->y][board[y][x]->x] = nullptr; // Clear the old square
 		board[y][x]->x = x; // Update piece's x position
-		board[y][x]->y = y; // Update piece's y position
+		board[y][x]->y = y; // Update piece's y position}
 		board[y][x]->temp[0] = 1; // Mark as moved
 	}
 	void Chess::UndoMove() {
@@ -492,6 +480,8 @@ namespace Chess {
 	}
 
 	void Chess::ischeck(int color) {
+		isCheck[0] = false; // Reset check status for white
+		isCheck[1] = false; // Reset check status for black
 		// Check if the king of the specified color is in check
 		int derections[8][2] = {
 			{-1, 0}, {1, 0}, {0, -1}, {0, 1}, // Vertical and horizontal
@@ -600,6 +590,7 @@ namespace Chess {
 	}
 
 	void Chess::CoverSquare(Piece *piece) {
+		ischeck(piece->color); // Update check status before calculating moves
 	// logic for sliding pieces
 		ClrCovSquare(piece);
 		int directions[8][2] = {
@@ -653,7 +644,7 @@ namespace Chess {
 				}
 			}
 			// Castling logic
-			if (piece->temp[0] == 0) { // If the king has not moved
+			if (!isCheck[piece->color] && piece->x == 4 && piece->temp[0] == 0) { // If the king has not moved
 				// Check for castling on the left side
 				if (board[piece->y][0] != nullptr && board[piece->y][0]->type == 1 && board[piece->y][0]->temp[0] == 0 && board[piece->y][1] == nullptr && board[piece->y][2] == nullptr && board[piece->y][3] == nullptr) {
 					piece->CovSquare[piece->y][2] = 3; // Castling left

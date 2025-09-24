@@ -7,7 +7,6 @@ int main() {
 	// Main game loop
 	while (chessGame.isOpen()) {
 		chessGame.ProcessEvents();
-		chessGame.update();
 		chessGame.Render();
 	}
 
